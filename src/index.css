@@ -1,0 +1,160 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111827;
+  color: white;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  border-radius: 8px;
+  border: 1px solid #4b5563;
+  background: #111827;
+  color: white;
+  outline: none;
+}
+
+input:focus {
+  border-color: #60a5fa;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.auth-box,
+.welcome-box {
+  width: 400px;
+  padding: 35px;
+  background: #1f2937;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.auth-box h1,
+.welcome-box h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-box p,
+.welcome-box p {
+  text-align: center;
+}
+
+a {
+  color: #60a5fa;
+}
+
+.error {
+  color: #f87171;
+  text-align: center;
+}
+
+.welcome-box {
+  text-align: center;
+}
+
+.welcome-box button {
+  margin: 8px;
+}
+
+.crud-page {
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.crud-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 30px;
+  background: #1f2937;
+  border-radius: 15px;
+}
+
+.crud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.crud-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px;
+  border-bottom: 1px solid #374151;
+  text-align: left;
+}
+
+th {
+  background: #111827;
+}
+
+td button {
+  margin-right: 8px;
+}
+
+@media (max-width: 700px) {
+  .crud-page {
+    padding: 15px;
+  }
+
+  .crud-form {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-box,
+  .welcome-box {
+    width: 100%;
+  }
+}
