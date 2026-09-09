@@ -133,7 +133,14 @@ function Users() {
         <div className="search-container">
           <input
             type="text"
-            placeholder="Search by name or email...."
+            placeholder="Search by name or email..."
+            value={search}
+            onChange={handleSearch}
+          />
+        </div>
+
+        {editingId !== null && role === "Admin" && (
+          <form className="crud-form" onSubmit={updateUser}>
             <input
               type="text"
               placeholder="Name"
