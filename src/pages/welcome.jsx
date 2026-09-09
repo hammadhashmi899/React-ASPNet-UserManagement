@@ -4,12 +4,12 @@ function Welcome() {
   const navigate = useNavigate();
 
   const user = JSON.parse(
-    localStorage.getItem("user") || "{}"
+    sessionStorage.getItem("user") || "{}"
   );
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
 
     navigate("/login");
   };
@@ -31,6 +31,12 @@ function Welcome() {
           onClick={() => navigate("/crud")}
         >
           Manage Emails
+        </button>
+
+        <button
+          onClick={() => navigate("/users")}
+        >
+          Manage Users
         </button>
 
         <button onClick={logout}>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import api from "../api/api";
+
 function Login() {
   const navigate = useNavigate();
 
@@ -31,14 +32,15 @@ function Login() {
 
       const data = response.data;
 
-      localStorage.setItem("token", data.token);
+      sessionStorage.setItem("token", data.token);
 
-      localStorage.setItem(
+      sessionStorage.setItem(
         "user",
         JSON.stringify({
           userId: data.userId,
           name: data.name,
           email: data.email,
+          role: data.role,
         }),
       );
 
@@ -88,3 +90,4 @@ function Login() {
 }
 
 export default Login;
+

@@ -9,14 +9,16 @@ import Login from "./pages/login";
 import Signup from "./pages/Signup";
 import Welcome from "./pages/welcome";
 import Crud from "./pages/context/Crud";
+import Users from "./pages/context/Users";
 
 function App() {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   return (
     <BrowserRouter>
       <Routes>
 
+        {/* Default page */}
         <Route
           path="/"
           element={
@@ -28,10 +30,19 @@ function App() {
           }
         />
 
-        <Route path="/login" element={<Login />} />
+        {/* Login */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-        <Route path="/signup" element={<Signup />} />
+        {/* Signup */}
+        <Route
+          path="/signup"
+          element={<Signup />}
+        />
 
+        {/* Welcome */}
         <Route
           path="/welcome"
           element={
@@ -43,11 +54,24 @@ function App() {
           }
         />
 
+        {/* Email CRUD */}
         <Route
           path="/crud"
           element={
             token ? (
               <Crud />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+
+        {/* Users Management */}
+        <Route
+          path="/users"
+          element={
+            token ? (
+              <Users />
             ) : (
               <Navigate to="/login" />
             )
