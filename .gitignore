@@ -1,4 +1,22 @@
-node_modules/
-.env
+# Visual Studio
 .vs/
-dist/
+*.user
+*.suo
+
+# .NET build files
+bin/
+obj/
+
+# User-specific files
+*.csproj.user
+
+# Logs
+*.log
+
+# Local development settings
+appsettings.Development.json
+
+# Local JWT configuration
+backend/WebApplication1/appsettings.json
+
+backend/WebApplication1/dbo.Users.data.sql

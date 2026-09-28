@@ -1,0 +1,11 @@
+@WebApplication1_HostAddress = https://localhost:7255
+
+GET {{WebApplication1_HostAddress}}/api/values
+Accept: application/json
+
+###
+
+POST {{WebApplication1_HostAddress}}/api/values
+Content-Type: application/x-www-form-urlencoded
+
+email=hammad@gmail.com
