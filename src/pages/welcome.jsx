@@ -11,7 +11,7 @@ function Welcome() {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
 
-    navigate("/login");
+    navigate("/");
   };
 
   return (

@@ -9,23 +9,36 @@ function Crud() {
   const [emails, setEmails] = useState([]);
 
   const [email, setEmail] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] =
+    useState("");
 
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] =
+    useState(null);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
 
   // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
+
+  const [currentPage, setCurrentPage] =
+    useState(1);
+
   const emailsPerPage = 5;
+
+  // -----------------------------
+  // Get Emails
+  // -----------------------------
 
   const getEmails = async () => {
     try {
       setLoading(true);
       setError("");
 
-      const response = await api.get("/Values");
+      const response =
+        await api.get("/Values");
 
       setEmails(response.data);
     } catch (error) {
@@ -45,7 +58,7 @@ function Crud() {
   }, []);
 
   // -----------------------------
-  // Pagination calculations
+  // Pagination Calculations
   // -----------------------------
 
   const totalPages = Math.ceil(
@@ -53,15 +66,17 @@ function Crud() {
   );
 
   const startIndex =
-    (currentPage - 1) * emailsPerPage;
+    (currentPage - 1) *
+    emailsPerPage;
 
   const endIndex =
     startIndex + emailsPerPage;
 
-  const currentEmails = emails.slice(
-    startIndex,
-    endIndex
-  );
+  const currentEmails =
+    emails.slice(
+      startIndex,
+      endIndex
+    );
 
   // -----------------------------
   // Add / Update
@@ -73,7 +88,9 @@ function Crud() {
     setError("");
 
     if (!email.trim()) {
-      setError("Email is required.");
+      setError(
+        "Email is required."
+      );
       return;
     }
 
@@ -81,19 +98,26 @@ function Crud() {
       setLoading(true);
 
       if (editingId === null) {
+
         await api.post("/Values", {
           email: email.trim(),
-          description: description.trim(),
+          description:
+            description.trim(),
         });
 
-        // New email ke baad first page par
         setCurrentPage(1);
+
       } else {
-        await api.put(`/Values/${editingId}`, {
-          id: editingId,
-          email: email.trim(),
-          description: description.trim(),
-        });
+
+        await api.put(
+          `/Values/${editingId}`,
+          {
+            id: editingId,
+            email: email.trim(),
+            description:
+              description.trim(),
+          }
+        );
       }
 
       setEmail("");
@@ -101,6 +125,7 @@ function Crud() {
       setEditingId(null);
 
       await getEmails();
+
     } catch (error) {
       console.error(error);
 
@@ -120,7 +145,9 @@ function Crud() {
   const editEmail = (item) => {
     setEditingId(item.id);
     setEmail(item.email);
-    setDescription(item.description || "");
+    setDescription(
+      item.description || ""
+    );
     setError("");
   };
 
@@ -129,9 +156,10 @@ function Crud() {
   // -----------------------------
 
   const deleteEmail = async (id) => {
-    const confirmDelete = window.confirm(
-      "Confirm this email to delete?"
-    );
+    const confirmDelete =
+      window.confirm(
+        "Confirm this email to delete?"
+      );
 
     if (!confirmDelete) {
       return;
@@ -141,22 +169,28 @@ function Crud() {
       setLoading(true);
       setError("");
 
-      await api.delete(`/Values/${id}`);
-
-      // Emails dobara load karo
-      await getEmails();
-
-      // Agar current page delete ke baad empty ho jaye
-      const newTotalPages = Math.ceil(
-        (emails.length - 1) / emailsPerPage
+      await api.delete(
+        `/Values/${id}`
       );
 
+      await getEmails();
+
+      const newTotalPages =
+        Math.ceil(
+          (emails.length - 1) /
+            emailsPerPage
+        );
+
       if (
-        currentPage > newTotalPages &&
+        currentPage >
+          newTotalPages &&
         newTotalPages > 0
       ) {
-        setCurrentPage(newTotalPages);
+        setCurrentPage(
+          newTotalPages
+        );
       }
+
     } catch (error) {
       console.error(error);
 
@@ -186,7 +220,9 @@ function Crud() {
 
   const previousPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage(
+        currentPage - 1
+      );
     }
   };
 
@@ -195,13 +231,57 @@ function Crud() {
   // -----------------------------
 
   const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (
+      currentPage < totalPages
+    ) {
+      setCurrentPage(
+        currentPage + 1
+      );
     }
   };
 
   // -----------------------------
-  // Page Number
+  // Maximum 3 Page Numbers
+  // -----------------------------
+
+  const getPageNumbers = () => {
+    const pages = [];
+
+    let startPage;
+
+    if (currentPage <= 2) {
+      startPage = 1;
+    } else if (
+      currentPage >=
+      totalPages - 1
+    ) {
+      startPage = Math.max(
+        1,
+        totalPages - 2
+      );
+    } else {
+      startPage =
+        currentPage - 1;
+    }
+
+    const endPage = Math.min(
+      totalPages,
+      startPage + 2
+    );
+
+    for (
+      let i = startPage;
+      i <= endPage;
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
+
+  // -----------------------------
+  // Go To Page
   // -----------------------------
 
   const goToPage = (page) => {
@@ -210,31 +290,43 @@ function Crud() {
 
   return (
     <div className="crud-page">
+
       <div className="crud-container">
 
         {/* Header */}
+
         <div className="crud-header">
-          <h1>Email Management</h1>
+
+          <h1>
+            Email Management
+          </h1>
 
           <button
             className="back-button"
-            onClick={() => navigate("/welcome")}
+            onClick={() =>
+              navigate("/welcome")
+            }
           >
             ← Back
           </button>
+
         </div>
 
         {/* Form */}
+
         <form
           className="crud-form"
           onSubmit={handleSubmit}
         >
+
           <input
             type="email"
             placeholder="Enter email"
             value={email}
             onChange={(e) =>
-              setEmail(e.target.value)
+              setEmail(
+                e.target.value
+              )
             }
           />
 
@@ -243,7 +335,9 @@ function Crud() {
             placeholder="Enter description"
             value={description}
             onChange={(e) =>
-              setDescription(e.target.value)
+              setDescription(
+                e.target.value
+              )
             }
           />
 
@@ -265,9 +359,11 @@ function Crud() {
               Cancel
             </button>
           )}
+
         </form>
 
         {/* Error */}
+
         {error && (
           <p className="error">
             {error}
@@ -275,19 +371,26 @@ function Crud() {
         )}
 
         {/* Table */}
+
         <div className="table-container">
+
           <table>
+
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Email</th>
-                <th>Description</th>
+                <th>
+                  Description
+                </th>
                 <th>Actions</th>
               </tr>
             </thead>
 
             <tbody>
+
               {loading ? (
+
                 <tr>
                   <td
                     colSpan="4"
@@ -296,7 +399,10 @@ function Crud() {
                     Loading...
                   </td>
                 </tr>
-              ) : currentEmails.length === 0 ? (
+
+              ) : currentEmails.length ===
+                0 ? (
+
                 <tr>
                   <td
                     colSpan="4"
@@ -305,102 +411,153 @@ function Crud() {
                     No emails found.
                   </td>
                 </tr>
+
               ) : (
-                currentEmails.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
 
-                    <td>{item.email}</td>
+                currentEmails.map(
+                  (item) => (
 
-                    <td>
-                      {item.description || "-"}
-                    </td>
+                    <tr key={item.id}>
 
-                    <td className="action-buttons">
-                      <button
-                        onClick={() =>
-                          editEmail(item)
-                        }
-                      >
-                        Edit
-                      </button>
+                      <td>
+                        {item.id}
+                      </td>
 
-                      <button
-                        className="delete-button"
-                        onClick={() =>
-                          deleteEmail(item.id)
-                        }
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                      <td>
+                        {item.email}
+                      </td>
+
+                      <td>
+                        {item.description ||
+                          "-"}
+                      </td>
+
+                      <td className="action-buttons">
+
+                        <button
+                          onClick={() =>
+                            editEmail(
+                              item
+                            )
+                          }
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          className="delete-button"
+                          onClick={() =>
+                            deleteEmail(
+                              item.id
+                            )
+                          }
+                        >
+                          Delete
+                        </button>
+
+                      </td>
+
+                    </tr>
+
+                  )
+                )
+
               )}
+
             </tbody>
+
           </table>
+
         </div>
 
         {/* Pagination */}
+
         {totalPages > 0 && (
+
           <div className="pagination">
 
             <button
               className="pagination-button"
-              onClick={previousPage}
-              disabled={currentPage === 1}
+              onClick={
+                previousPage
+              }
+              disabled={
+                currentPage === 1
+              }
             >
               ← Previous
             </button>
 
             <div className="page-numbers">
-              {Array.from(
-                { length: totalPages },
-                (_, index) => index + 1
-              ).map((page) => (
-                <button
-                  key={page}
-                  className={`page-number ${
-                    currentPage === page
-                      ? "active-page"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    goToPage(page)
-                  }
-                >
-                  {page}
-                </button>
-              ))}
+
+              {getPageNumbers().map(
+                (page) => (
+
+                  <button
+                    key={page}
+                    className={`page-number ${
+                      currentPage === page
+                        ? "active-page"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      goToPage(page)
+                    }
+                  >
+                    {page}
+                  </button>
+
+                )
+              )}
+
             </div>
 
             <button
               className="pagination-button"
-              onClick={nextPage}
+              onClick={
+                nextPage
+              }
               disabled={
-                currentPage === totalPages
+                currentPage ===
+                totalPages
               }
             >
               Next →
             </button>
 
           </div>
+
         )}
 
-        {/* Page information */}
+        {/* Page Information */}
+
         {emails.length > 0 && (
+
           <p className="pagination-info">
+
             Showing{" "}
-            {startIndex + 1}-
+
+            {startIndex + 1}
+
+            -
+
             {Math.min(
               endIndex,
               emails.length
-            )}{" "}
-            of {emails.length} emails
+            )}
+
+            {" "}of{" "}
+
+            {emails.length}
+
+            {" "}emails
+
           </p>
+
         )}
 
       </div>
+
     </div>
   );
 }

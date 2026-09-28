@@ -22,16 +22,15 @@ function Users() {
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
 
-  // Current logged-in user
   const user = JSON.parse(
     sessionStorage.getItem("user") || "{}"
   );
 
   const role = user.role;
 
-  // =============================
-  // GET USERS
-  // =============================
+  // -----------------------------
+  // Get Users
+  // -----------------------------
 
   const getUsers = async () => {
     try {
@@ -65,18 +64,18 @@ function Users() {
     getUsers();
   }, [page, search]);
 
-  // =============================
-  // SEARCH
-  // =============================
+  // -----------------------------
+  // Search
+  // -----------------------------
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
     setPage(1);
   };
 
-  // =============================
-  // EDIT USER
-  // =============================
+  // -----------------------------
+  // Edit User
+  // -----------------------------
 
   const editUser = (item) => {
     setEditingId(item.id);
@@ -85,27 +84,34 @@ function Users() {
     setError("");
   };
 
-  // =============================
-  // UPDATE USER
-  // =============================
+  // -----------------------------
+  // Update User
+  // -----------------------------
 
   const updateUser = async (e) => {
     e.preventDefault();
 
-    setError("");
-
-    if (!editName.trim() || !editEmail.trim()) {
-      setError("Name and email are required.");
+    if (
+      !editName.trim() ||
+      !editEmail.trim()
+    ) {
+      setError(
+        "Name and email are required."
+      );
       return;
     }
 
     try {
       setLoading(true);
+      setError("");
 
-      await api.put(`/Users/${editingId}`, {
-        name: editName.trim(),
-        email: editEmail.trim(),
-      });
+      await api.put(
+        `/Users/${editingId}`,
+        {
+          name: editName.trim(),
+          email: editEmail.trim(),
+        }
+      );
 
       setEditingId(null);
       setEditName("");
@@ -116,7 +122,9 @@ function Users() {
       console.error(error);
 
       if (error.response?.status === 403) {
-        setError("Only Admin can update users.");
+        setError(
+          "Only Admin can update users."
+        );
       } else {
         setError(
           error.response?.data?.message ||
@@ -128,9 +136,9 @@ function Users() {
     }
   };
 
-  // =============================
-  // CANCEL EDIT
-  // =============================
+  // -----------------------------
+  // Cancel Edit
+  // -----------------------------
 
   const cancelEdit = () => {
     setEditingId(null);
@@ -139,9 +147,9 @@ function Users() {
     setError("");
   };
 
-  // =============================
-  // PREVIOUS PAGE
-  // =============================
+  // -----------------------------
+  // Previous Page
+  // -----------------------------
 
   const previousPage = () => {
     if (page > 1) {
@@ -149,9 +157,9 @@ function Users() {
     }
   };
 
-  // =============================
-  // NEXT PAGE
-  // =============================
+  // -----------------------------
+  // Next Page
+  // -----------------------------
 
   const nextPage = () => {
     if (page < totalPages) {
@@ -159,36 +167,62 @@ function Users() {
     }
   };
 
-  // =============================
-  // GO TO PAGE
-  // =============================
+  // -----------------------------
+  // Maximum 3 Page Numbers
+  // -----------------------------
 
-  const goToPage = (pageNumber) => {
-    setPage(pageNumber);
+  const getPageNumbers = () => {
+    const pages = [];
+
+    let startPage;
+
+    if (page <= 2) {
+      startPage = 1;
+    } else if (page >= totalPages - 1) {
+      startPage = Math.max(
+        1,
+        totalPages - 2
+      );
+    } else {
+      startPage = page - 1;
+    }
+
+    const endPage = Math.min(
+      totalPages,
+      startPage + 2
+    );
+
+    for (
+      let i = startPage;
+      i <= endPage;
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    return pages;
   };
 
   return (
     <div className="crud-page">
       <div className="crud-container">
 
-        {/* ========================= */}
-        {/* HEADER */}
-        {/* ========================= */}
+        {/* Header */}
 
         <div className="crud-header">
           <h1>Manage Users</h1>
 
           <button
             className="back-button"
-            onClick={() => navigate("/welcome")}
+            onClick={() =>
+              navigate("/welcome")
+            }
           >
             ← Back
           </button>
         </div>
 
-        {/* ========================= */}
-        {/* SEARCH */}
-        {/* ========================= */}
+        {/* Search */}
 
         <div className="search-container">
           <input
@@ -199,53 +233,54 @@ function Users() {
           />
         </div>
 
-        {/* ========================= */}
-        {/* EDIT FORM */}
-        {/* ========================= */}
+        {/* Admin Edit Form */}
 
-        {editingId !== null && role === "Admin" && (
-          <form
-            className="crud-form"
-            onSubmit={updateUser}
-          >
-            <input
-              type="text"
-              placeholder="Name"
-              value={editName}
-              onChange={(e) =>
-                setEditName(e.target.value)
-              }
-            />
-
-            <input
-              type="email"
-              placeholder="Email"
-              value={editEmail}
-              onChange={(e) =>
-                setEditEmail(e.target.value)
-              }
-            />
-
-            <button
-              type="submit"
-              disabled={loading}
+        {editingId !== null &&
+          role === "Admin" && (
+            <form
+              className="crud-form"
+              onSubmit={updateUser}
             >
-              Update
-            </button>
+              <input
+                type="text"
+                placeholder="Name"
+                value={editName}
+                onChange={(e) =>
+                  setEditName(
+                    e.target.value
+                  )
+                }
+              />
 
-            <button
-              type="button"
-              className="cancel-button"
-              onClick={cancelEdit}
-            >
-              Cancel
-            </button>
-          </form>
-        )}
+              <input
+                type="email"
+                placeholder="Email"
+                value={editEmail}
+                onChange={(e) =>
+                  setEditEmail(
+                    e.target.value
+                  )
+                }
+              />
 
-        {/* ========================= */}
-        {/* ERROR */}
-        {/* ========================= */}
+              <button
+                type="submit"
+                disabled={loading}
+              >
+                Update
+              </button>
+
+              <button
+                type="button"
+                className="cancel-button"
+                onClick={cancelEdit}
+              >
+                Cancel
+              </button>
+            </form>
+          )}
+
+        {/* Error */}
 
         {error && (
           <p className="error">
@@ -253,17 +288,13 @@ function Users() {
           </p>
         )}
 
-        {/* ========================= */}
-        {/* TOTAL USERS */}
-        {/* ========================= */}
+        {/* Total Users */}
 
-        <p className="total-users">
+        <p>
           Total Users: {totalUsers}
         </p>
 
-        {/* ========================= */}
-        {/* USERS TABLE */}
-        {/* ========================= */}
+        {/* Table */}
 
         <div className="table-container">
           <table>
@@ -285,7 +316,9 @@ function Users() {
                 <tr>
                   <td
                     colSpan={
-                      role === "Admin" ? 5 : 4
+                      role === "Admin"
+                        ? 5
+                        : 4
                     }
                     className="table-message"
                   >
@@ -296,7 +329,9 @@ function Users() {
                 <tr>
                   <td
                     colSpan={
-                      role === "Admin" ? 5 : 4
+                      role === "Admin"
+                        ? 5
+                        : 4
                     }
                     className="table-message"
                   >
@@ -306,13 +341,22 @@ function Users() {
               ) : (
                 users.map((item) => (
                   <tr key={item.id}>
-                    <td>{item.id}</td>
 
-                    <td>{item.name}</td>
+                    <td>
+                      {item.id}
+                    </td>
 
-                    <td>{item.email}</td>
+                    <td>
+                      {item.name}
+                    </td>
 
-                    <td>{item.role}</td>
+                    <td>
+                      {item.email}
+                    </td>
+
+                    <td>
+                      {item.role}
+                    </td>
 
                     {role === "Admin" && (
                       <td className="action-buttons">
@@ -325,6 +369,7 @@ function Users() {
                         </button>
                       </td>
                     )}
+
                   </tr>
                 ))
               )}
@@ -332,67 +377,68 @@ function Users() {
           </table>
         </div>
 
-        {/* ========================= */}
-        {/* PAGINATION */}
-        {/* ========================= */}
+        {/* Pagination */}
 
         {totalPages > 0 && (
           <div className="pagination">
-
-            {/* Previous */}
 
             <button
               className="pagination-button"
               onClick={previousPage}
               disabled={page === 1}
             >
-              ‹ Prev
+              ← Previous
             </button>
 
-            {/* Page Numbers */}
-
             <div className="page-numbers">
-              {Array.from(
-                { length: totalPages },
-                (_, index) => index + 1
-              ).map((pageNumber) => (
-                <button
-                  key={pageNumber}
-                  className={`page-number ${
-                    page === pageNumber
-                      ? "active-page"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    goToPage(pageNumber)
-                  }
-                >
-                  {pageNumber}
-                </button>
-              ))}
-            </div>
 
-            {/* Next */}
+              {getPageNumbers().map(
+                (pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    className={`page-number ${
+                      page === pageNumber
+                        ? "active-page"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setPage(
+                        pageNumber
+                      )
+                    }
+                  >
+                    {pageNumber}
+                  </button>
+                )
+              )}
+
+            </div>
 
             <button
               className="pagination-button"
               onClick={nextPage}
-              disabled={page === totalPages}
+              disabled={
+                page === totalPages
+              }
             >
-              Next ›
+              Next →
             </button>
 
           </div>
         )}
 
-        {/* ========================= */}
-        {/* PAGINATION INFO */}
-        {/* ========================= */}
+        {/* Page Information */}
 
         {totalUsers > 0 && (
           <p className="pagination-info">
-            Page {page} of {totalPages} ·{" "}
-            {totalUsers} users
+            Showing{" "}
+            {(page - 1) * pageSize + 1}
+            -
+            {Math.min(
+              page * pageSize,
+              totalUsers
+            )}{" "}
+            of {totalUsers} users
           </p>
         )}
 

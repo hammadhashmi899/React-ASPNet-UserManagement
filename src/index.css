@@ -383,7 +383,7 @@ td button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 7px;
+  gap: 10px;
   margin-top: 28px;
   width: 100%;
 }

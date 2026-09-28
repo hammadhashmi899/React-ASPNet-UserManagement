@@ -1,83 +1,67 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/login";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
 import Welcome from "./pages/welcome";
 import Crud from "./pages/context/Crud";
 import Users from "./pages/context/Users";
 
-function App() {
+function ProtectedRoute({ children }) {
   const token = sessionStorage.getItem("token");
 
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+function HomeRedirect() {
+  const token = sessionStorage.getItem("token");
+
+  return token ? (
+    <Navigate to="/welcome" replace />
+  ) : (
+    <Navigate to="/login" replace />
+  );
+}
+
+function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<HomeRedirect />} />
 
-        {/* Default page */}
-        <Route
-          path="/"
-          element={
-            token ? (
-              <Navigate to="/welcome" />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+        <Route path="/login" element={<Login />} />
 
-        {/* Login */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/signup" element={<Signup />} />
 
-        {/* Signup */}
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
-
-        {/* Welcome */}
         <Route
           path="/welcome"
           element={
-            token ? (
+            <ProtectedRoute>
               <Welcome />
-            ) : (
-              <Navigate to="/login" />
-            )
+            </ProtectedRoute>
           }
         />
 
-        {/* Email CRUD */}
         <Route
           path="/crud"
           element={
-            token ? (
+            <ProtectedRoute>
               <Crud />
-            ) : (
-              <Navigate to="/login" />
-            )
+            </ProtectedRoute>
           }
         />
 
-        {/* Users Management */}
         <Route
           path="/users"
           element={
-            token ? (
+            <ProtectedRoute>
               <Users />
-            ) : (
-              <Navigate to="/login" />
-            )
+            </ProtectedRoute>
           }
         />
-
       </Routes>
     </BrowserRouter>
   );
