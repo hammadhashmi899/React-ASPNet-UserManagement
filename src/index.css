@@ -1,3 +1,7 @@
+/* =========================
+   GLOBAL
+========================= */
+
 * {
   box-sizing: border-box;
 }
@@ -15,9 +19,11 @@ body {
   color: #f8fafc;
 }
 
-/* =========================
-   Global Button
-========================= */
+button,
+input,
+select {
+  font: inherit;
+}
 
 button {
   border: none;
@@ -26,47 +32,64 @@ button {
   background: #2563eb;
   color: white;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s ease;
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   background: #1d4ed8;
   transform: translateY(-1px);
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
   transform: none;
 }
 
 /* =========================
-   Inputs
+   INPUTS
 ========================= */
 
-input {
+input,
+select {
   width: 100%;
+  min-width: 0;
   padding: 13px 14px;
-  border-radius: 8px;
+  border-radius: 9px;
   border: 1px solid #374151;
   background: #111827;
-  color: white;
+  color: #f8fafc;
   outline: none;
-  transition: 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 input::placeholder {
   color: #9ca3af;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
+select {
+  cursor: pointer;
+}
+
+select option {
+  background: #111827;
+  color: white;
+}
+
 /* =========================
-   Animated Background
+   ANIMATED BACKGROUND
 ========================= */
 
 .page,
@@ -75,8 +98,6 @@ input:focus {
   overflow: hidden;
   isolation: isolate;
 }
-
-/* Main blue glow */
 
 .page::before,
 .crud-page::before {
@@ -92,9 +113,8 @@ input:focus {
   filter: blur(110px);
   animation: blueGlow 10s ease-in-out infinite;
   z-index: -1;
+  pointer-events: none;
 }
-
-/* Second glow */
 
 .page::after,
 .crud-page::after {
@@ -110,42 +130,33 @@ input:focus {
   filter: blur(100px);
   animation: secondGlow 12s ease-in-out infinite;
   z-index: -1;
+  pointer-events: none;
 }
 
-/* =========================
-   Glow Animations
-========================= */
-
 @keyframes blueGlow {
-  0% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
 
   50% {
     transform: translate(350px, 250px) scale(1.2);
   }
-
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
 }
 
 @keyframes secondGlow {
-  0% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
 
   50% {
     transform: translate(-300px, -200px) scale(1.15);
   }
-
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
 }
 
 /* =========================
-   Auth Pages
+   AUTH PAGES
 ========================= */
 
 .page {
@@ -156,10 +167,6 @@ input:focus {
   padding: 20px;
   background: #080d18;
 }
-
-/* =========================
-   Auth / Welcome Cards
-========================= */
 
 .auth-box,
 .welcome-box {
@@ -208,21 +215,33 @@ input:focus {
 }
 
 /* =========================
-   Error
+   ERROR AND SUCCESS
 ========================= */
 
 .error {
   margin: 0;
-  padding: 10px;
+  padding: 11px 13px;
   border-radius: 8px;
   background: rgba(248, 113, 113, 0.1);
   border: 1px solid rgba(248, 113, 113, 0.25);
   color: #f87171;
   text-align: center;
+  font-size: 14px;
+}
+
+.success {
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 8px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #4ade80;
+  text-align: center;
+  font-size: 14px;
 }
 
 /* =========================
-   Welcome
+   WELCOME
 ========================= */
 
 .welcome-box {
@@ -238,7 +257,7 @@ input:focus {
 }
 
 /* =========================
-   CRUD
+   CRUD / USERS PAGE
 ========================= */
 
 .crud-page {
@@ -248,7 +267,8 @@ input:focus {
 }
 
 .crud-container {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1100px;
   margin: auto;
   padding: 30px;
   background: rgba(17, 24, 39, 0.92);
@@ -271,162 +291,272 @@ input:focus {
 .crud-header h1 {
   margin: 0;
   font-size: 28px;
+  color: #f8fafc;
 }
 
-.crud-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 10px;
-  margin-bottom: 30px;
+.add-user-button {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  box-shadow: 0 5px 18px rgba(37, 99, 235, 0.2);
+}
+
+.add-user-button:hover {
+  box-shadow: 0 7px 22px rgba(37, 99, 235, 0.3);
+}
+
+.back-button {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+}
+
+.back-button:hover {
+  background: #334155;
 }
 
 /* =========================
-   Table
+   SEARCH AND FILTERS
+========================= */
+
+.search-container {
+  display: grid;
+  grid-template-columns:
+    minmax(200px, 2fr) minmax(130px, 1fr)
+    minmax(130px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 22px;
+  padding: 16px;
+  background: rgba(11, 17, 32, 0.75);
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+}
+
+.search-container input,
+.search-container select {
+  height: 44px;
+  padding: 0 13px;
+  font-size: 14px;
+}
+
+.reset-filters-button {
+  height: 44px;
+  padding: 0 16px;
+  white-space: nowrap;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+}
+
+.reset-filters-button:hover {
+  background: #334155;
+  border-color: #64748b;
+}
+
+/* =========================
+   CREATE / EDIT FORM
+========================= */
+
+.crud-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: rgba(11, 17, 32, 0.75);
+  border: 1px solid #263449;
+  border-radius: 12px;
+}
+
+.crud-form input,
+.crud-form select {
+  min-height: 45px;
+}
+
+.crud-form button {
+  min-height: 43px;
+}
+
+.cancel-button {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.cancel-button:hover {
+  background: #475569;
+}
+
+/* =========================
+   USER COUNT / SUMMARY
+========================= */
+
+.crud-container h2 {
+  color: #e2e8f0;
+}
+
+.crud-container h3 {
+  color: #cbd5e1;
+}
+
+/* =========================
+   TABLE
 ========================= */
 
 .table-container {
+  width: 100%;
   overflow-x: auto;
-  border: 1px solid #1f2937;
-  border-radius: 10px;
+  border: 1px solid #263449;
+  border-radius: 12px;
+  background: rgba(11, 17, 32, 0.55);
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 650px;
 }
 
 th,
 td {
-  padding: 14px;
+  padding: 15px 14px;
   border-bottom: 1px solid #1f2937;
   text-align: left;
+  white-space: nowrap;
 }
 
 th {
   background: #0b1120;
   color: #93c5fd;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
 td {
   color: #d1d5db;
+  font-size: 14px;
+}
+
+tbody tr {
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(37, 99, 235, 0.06);
 }
 
 tr:last-child td {
   border-bottom: none;
 }
 
-tr:hover td {
-  background: rgba(37, 99, 235, 0.05);
-}
-
 td button {
-  margin-right: 8px;
-  padding: 9px 13px;
-  font-size: 13px;
+  margin-right: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
 }
 
 /* =========================
-   Mobile
+   ACTION BUTTONS
 ========================= */
 
-@media (max-width: 700px) {
-  .crud-page {
-    padding: 15px;
-  }
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-  .crud-container {
-    padding: 20px;
-  }
+.action-buttons button {
+  margin: 0;
+}
 
-  .crud-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.action-buttons button:first-child {
+  background: #2563eb;
+}
 
-  .crud-header h1 {
-    text-align: center;
-  }
+.action-buttons button:last-child {
+  background: #b91c1c;
+}
 
-  .crud-form {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-box,
-  .welcome-box {
-    width: 100%;
-    padding: 28px 22px;
-  }
+.action-buttons button:last-child:hover {
+  background: #dc2626;
 }
 
 /* =========================
-   Reduced Motion
+   ACTIVE / INACTIVE STATUS
 ========================= */
 
-@media (prefers-reduced-motion: reduce) {
-  .page::before,
-  .page::after,
-  .crud-page::before,
-  .crud-page::after {
-    animation: none;
-  }
-
-  button {
-    transition: none;
-  }
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid transparent;
 }
-/* ============================= */
-/* STYLISH PAGINATION */
-/* ============================= */
+
+.status-active {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+.status-inactive {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.25);
+}
+
+/* =========================
+   TABLE MESSAGES
+========================= */
+
+.table-message {
+  padding: 28px 15px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* =========================
+   PAGINATION
+========================= */
 
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 28px;
   width: 100%;
 }
 
-/* Previous / Next */
-
 .pagination-button {
   height: 38px;
   padding: 0 15px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: rgba(17, 24, 39, 0.9);
   border: 1px solid #334155;
   border-radius: 10px;
-
   color: #cbd5e1;
   font-size: 13px;
   font-weight: 600;
-
-  transition: all 0.2s ease;
 }
 
 .pagination-button:hover:not(:disabled) {
   background: rgba(37, 99, 235, 0.15);
   border-color: #3b82f6;
   color: #60a5fa;
-  transform: translateY(-2px);
   box-shadow: 0 5px 18px rgba(37, 99, 235, 0.18);
 }
 
 .pagination-button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
-  transform: none;
 }
-
-
-/* ============================= */
-/* PAGE NUMBERS */
-/* ============================= */
 
 .page-numbers {
   display: flex;
@@ -437,80 +567,94 @@ td button {
 .page-number {
   width: 38px;
   height: 38px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 0;
-
   background: rgba(17, 24, 39, 0.9);
   border: 1px solid #334155;
   border-radius: 10px;
-
   color: #94a3b8;
   font-size: 13px;
   font-weight: 600;
-
-  transition: all 0.2s ease;
 }
 
 .page-number:hover {
   background: rgba(37, 99, 235, 0.15);
   border-color: #3b82f6;
   color: #60a5fa;
-
-  transform: translateY(-2px);
 }
-
-
-/* ============================= */
-/* ACTIVE PAGE */
-/* ============================= */
 
 .page-number.active-page {
-  background: linear-gradient(
-    135deg,
-    #2563eb,
-    #3b82f6
-  );
-
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
   border-color: #60a5fa;
-
   color: white;
-
-  box-shadow:
-    0 0 12px rgba(37, 99, 235, 0.35),
-    0 5px 15px rgba(37, 99, 235, 0.2);
-
-  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
 }
-
-
-/* ============================= */
-/* PAGINATION INFO */
-/* ============================= */
 
 .pagination-info {
   text-align: center;
   margin: 11px 0 0;
-
   color: #64748b;
   font-size: 12px;
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
 
-/* ============================= */
-/* MOBILE */
-/* ============================= */
+@media (max-width: 800px) {
+  .search-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .crud-container {
+    padding: 22px;
+  }
+}
 
 @media (max-width: 600px) {
+  .crud-page {
+    padding: 15px;
+  }
+
+  .crud-container {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .crud-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crud-header h1 {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .search-container {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .crud-form {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+
+  .auth-box,
+  .welcome-box {
+    width: 100%;
+    padding: 28px 22px;
+  }
+
   .pagination {
     gap: 5px;
   }
 
   .pagination-button {
-    padding: 0 11px;
+    padding: 0 10px;
     font-size: 12px;
   }
 
@@ -521,5 +665,184 @@ td button {
 
   .page-numbers {
     gap: 4px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================
+   TABLE COLUMN SORTING
+========================================== */
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 5px 7px;
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+  color: inherit;
+
+  font: inherit;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.sort-button:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.sort-icon {
+  min-width: 14px;
+  color: #60a5fa;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   USER STATUS BADGES
+========================================== */
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 20px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-inactive {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.13);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* TABLE SORTING */
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 5px 7px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.sort-button:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+.sort-icon {
+  min-width: 14px;
+  color: #60a5fa;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+/* USER STATUS */
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-active {
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.13);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-inactive {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.13);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.stat-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.stat-card strong {
+  font-size: 30px;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.dashboard-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-actions {
+    flex-direction: column;
   }
 }

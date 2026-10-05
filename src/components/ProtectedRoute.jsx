@@ -1,10 +1,15 @@
 import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({ children }) {
-  const user = sessionStorageStorage.getItem("user");
+function ProtectedRoute({ children, adminOnly = false }) {
+  const token = sessionStorage.getItem("token");
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
 
-  if (!user) {
-    return <Navigate to="/" replace />;
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (adminOnly && user.role?.toLowerCase() !== "admin") {
+    return <Navigate to="/welcome" replace />;
   }
 
   return children;

@@ -5,16 +5,8 @@ import Signup from "./pages/signup";
 import Welcome from "./pages/welcome";
 import Crud from "./pages/context/Crud";
 import Users from "./pages/context/Users";
-
-function ProtectedRoute({ children }) {
-  const token = sessionStorage.getItem("token");
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-}
+import AuditLogs from "./pages/AuditLogs";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function HomeRedirect() {
   const token = sessionStorage.getItem("token");
@@ -59,6 +51,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Users />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/audit-logs"
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <AuditLogs />
             </ProtectedRoute>
           }
         />

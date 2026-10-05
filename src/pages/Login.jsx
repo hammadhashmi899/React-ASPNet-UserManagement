@@ -17,6 +17,7 @@ function Login() {
 
     setError("");
 
+    // Basic validation
     if (!email || !password) {
       setError("Email and password are required.");
       return;
@@ -32,8 +33,10 @@ function Login() {
 
       const data = response.data;
 
+      // Save JWT token
       sessionStorage.setItem("token", data.token);
 
+      // Save logged-in user information
       sessionStorage.setItem(
         "user",
         JSON.stringify({
@@ -44,11 +47,13 @@ function Login() {
         }),
       );
 
+      // Login successful
       navigate("/welcome");
     } catch (error) {
-      console.error(error);
+      console.error("Login Error:", error);
 
-      setError(error.response?.data?.message || "Login failed.");
+      // Use centralized API error message
+      setError(error.userMessage || "Login failed.");
     } finally {
       setLoading(false);
     }
@@ -65,6 +70,7 @@ function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={loading}
           />
 
           <input
@@ -72,6 +78,7 @@ function Login() {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={loading}
           />
 
           {error && <p className="error">{error}</p>}
@@ -90,4 +97,3 @@ function Login() {
 }
 
 export default Login;
-
