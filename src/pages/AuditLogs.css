@@ -180,4 +180,24 @@
     align-items: flex-start;
     flex-direction: column;
   }
+}.audit-title-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.audit-back-button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.audit-back-button:hover {
+  opacity: 0.85;
 }

@@ -7,6 +7,8 @@ import Crud from "./pages/context/Crud";
 import Users from "./pages/context/Users";
 import AuditLogs from "./pages/AuditLogs";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function HomeRedirect() {
   const token = sessionStorage.getItem("token");
@@ -54,6 +56,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route
           path="/audit-logs"

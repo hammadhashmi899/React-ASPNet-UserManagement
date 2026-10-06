@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import "./AuditLogs.css";
 
 function AuditLogs() {
+  const navigate = useNavigate();
+
   const [logs, setLogs] = useState([]);
   const [actions, setActions] = useState([]);
 
@@ -84,7 +87,6 @@ function AuditLogs() {
       setTotalLogs((currentTotal) =>
         Math.max(currentTotal - 1, 0)
       );
-
     } catch (error) {
       console.error("Delete Audit Log Error:", error);
 
@@ -112,13 +114,27 @@ function AuditLogs() {
 
   return (
     <div className="audit-page">
-      <div className="audit-header">
-        <div>
-          <h1>Audit Logs</h1>
 
-          <p>
-            Monitor user activity and system events.
-          </p>
+      {/* Header */}
+      <div className="audit-header">
+
+        <div className="audit-title-section">
+
+          <button
+            className="audit-back-button"
+            onClick={() => navigate("/welcome")}
+          >
+            ← Back
+          </button>
+
+          <div>
+            <h1>Audit Logs</h1>
+
+            <p>
+              Monitor user activity and system events.
+            </p>
+          </div>
+
         </div>
 
         <div className="audit-total">
@@ -128,9 +144,12 @@ function AuditLogs() {
             {totalLogs}
           </strong>
         </div>
+
       </div>
 
+      {/* Filters */}
       <div className="audit-filters">
+
         <input
           type="text"
           placeholder="Search name, email or description..."
@@ -157,16 +176,21 @@ function AuditLogs() {
             </option>
           ))}
         </select>
+
       </div>
 
+      {/* Error */}
       {error && (
         <div className="audit-error">
           {error}
         </div>
       )}
 
+      {/* Table */}
       <div className="audit-table-wrapper">
+
         <table className="audit-table">
+
           <thead>
             <tr>
               <th>ID</th>
@@ -181,7 +205,9 @@ function AuditLogs() {
           </thead>
 
           <tbody>
+
             {loading ? (
+
               <tr>
                 <td
                   colSpan="8"
@@ -190,7 +216,9 @@ function AuditLogs() {
                   Loading audit logs...
                 </td>
               </tr>
+
             ) : error ? (
+
               <tr>
                 <td
                   colSpan="8"
@@ -199,7 +227,9 @@ function AuditLogs() {
                   No data available.
                 </td>
               </tr>
+
             ) : logs.length === 0 ? (
+
               <tr>
                 <td
                   colSpan="8"
@@ -208,10 +238,16 @@ function AuditLogs() {
                   No audit logs found.
                 </td>
               </tr>
+
             ) : (
+
               logs.map((log) => (
+
                 <tr key={log.id}>
-                  <td>{log.id}</td>
+
+                  <td>
+                    {log.id}
+                  </td>
 
                   <td>
                     {log.userName || "Unknown"}
@@ -240,6 +276,7 @@ function AuditLogs() {
                   </td>
 
                   <td>
+
                     <button
                       className="audit-delete-button"
                       onClick={() =>
@@ -251,20 +288,30 @@ function AuditLogs() {
                         ? "Deleting..."
                         : "Delete"}
                     </button>
+
                   </td>
+
                 </tr>
+
               ))
+
             )}
+
           </tbody>
+
         </table>
+
       </div>
 
+      {/* Pagination */}
       <div className="audit-pagination">
+
         <span>
           Page {page} of {totalPages || 1}
         </span>
 
         <div>
+
           <button
             disabled={page <= 1 || loading}
             onClick={() =>
@@ -286,8 +333,11 @@ function AuditLogs() {
           >
             Next
           </button>
+
         </div>
+
       </div>
+
     </div>
   );
 }

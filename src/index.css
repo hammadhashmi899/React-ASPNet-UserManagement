@@ -846,3 +846,45 @@ td button {
     flex-direction: column;
   }
 }
+/* =========================
+   RESET PASSWORD BUTTONS
+========================= */
+
+/* Continue to Reset Password */
+.auth-box > button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  cursor: pointer;
+  font-weight: 600;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.auth-box > button:hover:not(:disabled) {
+  background: #334155;
+  border-color: #475569;
+  transform: translateY(-1px);
+}
+
+/* Keep link below button properly spaced */
+.auth-box > p:last-child {
+  margin-top: 20px;
+}
+.auth-box form button {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  border: none;
+  box-shadow: 0 5px 18px rgba(37, 99, 235, 0.2);
+}
+
+.auth-box form button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  box-shadow: 0 7px 22px rgba(37, 99, 235, 0.3);
+}
