@@ -9,6 +9,8 @@ import AuditLogs from "./pages/AuditLogs";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
 
 function HomeRedirect() {
   const token = sessionStorage.getItem("token");
@@ -45,6 +47,28 @@ function App() {
             <ProtectedRoute>
               <Crud />
             </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/change-password"
+          element={
+            localStorage.getItem("token") ? (
+              <ChangePassword />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            localStorage.getItem("token") ? (
+              <Profile />
+            ) : (
+              <Navigate to="/login" replace />
+            )
           }
         />
 

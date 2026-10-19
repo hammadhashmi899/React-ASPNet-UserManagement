@@ -888,3 +888,77 @@ td button {
   background: linear-gradient(135deg, #1d4ed8, #2563eb);
   box-shadow: 0 7px 22px rgba(37, 99, 235, 0.3);
 }
+
+/* BULK USER OPERATIONS */
+
+.bulk-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0;
+  padding: 14px;
+  border: 1px solid rgba(80, 150, 255, 0.25);
+  border-radius: 12px;
+  background: rgba(20, 35, 60, 0.35);
+}
+
+.bulk-toolbar > span {
+  margin-right: 6px;
+}
+
+.bulk-action-button,
+.bulk-delete-button {
+  padding: 9px 13px;
+  border: none;
+  border-radius: 7px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bulk-action-button {
+  background: #2563eb;
+}
+
+.bulk-delete-button {
+  background: #dc2626;
+}
+
+.bulk-action-button:hover,
+.bulk-delete-button:hover {
+  transform: translateY(-1px);
+}
+
+.bulk-action-button:disabled,
+.bulk-delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bulk-toolbar input[type="checkbox"],
+.table-container input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.bulk-toolbar button,
+.bulk-toolbar input {
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .bulk-toolbar {
+    align-items: stretch;
+  }
+
+  .bulk-toolbar button {
+    width: 100%;
+  }
+}
