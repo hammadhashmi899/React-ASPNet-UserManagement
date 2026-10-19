@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 namespace WebApplication1.Data
@@ -14,5 +15,7 @@ namespace WebApplication1.Data
         public DbSet<UserModel> Users { get; set; }
 
         public DbSet<EmailModel> Emails { get; set; }
+
+        public DbSet<AuditLogModel> AuditLogs { get; set; }
     }
 }

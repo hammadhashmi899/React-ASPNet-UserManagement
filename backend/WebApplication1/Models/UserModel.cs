@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication1.Models
 {
@@ -18,5 +19,12 @@ namespace WebApplication1.Models
 
         [Required]
         public string Role { get; set; } = "User";
+
+        [Required]
+        public bool IsActive { get; set; } = true;
+
+        public string? PasswordResetTokenHash { get; set; }
+
+        public DateTime? PasswordResetTokenExpiryUtc { get; set; }
     }
 }

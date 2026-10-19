@@ -30,3 +30,7 @@ dist-ssr/
 *.sln
 *.sw?
 .vs/
+**/bin/
+**/obj/
+**/.vs/
+**/*.csproj.user
